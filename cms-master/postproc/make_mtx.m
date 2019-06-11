@@ -1,10 +1,17 @@
 %% parameters
+np = 10; % Number of CPU
+output_dir = '../expt/expt_japan/output';
 
 % con_file = CMS connectivity output
-con_file=load('con_file_1');
+con_file=load('../expt/expt_japan/output/con_file_09');
 % n = number of polygons
-n=200;
+n=5;
+%% 
 
+% con_file = CMS connectivity output
+con_file=load('../expt/expt_japan/output/con_file_09');
+% n = number of polygons
+n=5;
 
 %% compute a square connectivity matrix(ixj)
 

@@ -223,6 +223,7 @@ SUBROUTINE nc_read4d(ncfname, ncId, varname, values,nx,ny,nz,nt,start)
  integer  (kind=int_kind), intent(in),optional :: start(4)
  real  (kind=real_kind),dimension(nx,ny,nz,nt),intent(out) :: values
  real (kind=real_kind)     :: scalefactor
+ real (kind=real_kind)     :: addoffset
  integer  (kind=int_kind)  :: varId, sfpresent
 
  CALL ncheck(nf90_inq_varid(ncId, varName, varId),ncfname)
@@ -237,6 +238,10 @@ SUBROUTINE nc_read4d(ncfname, ncId, varname, values,nx,ny,nz,nt,start)
  IF (sfpresent.eq.1) THEN
   values = values * scalefactor
  ENDIF
+ CALL nc_addoffset(ncfname, ncId, varId, sfpresent, addoffset)
+ IF (sfpresent.eq.1) THEN
+  values = values + addoffset
+ ENDIF
 END SUBROUTINE nc_read4d
 
 !**************************************************************
@@ -248,6 +253,7 @@ SUBROUTINE nc_read3d(ncfname, ncId, varname, values,nx,ny,nt,start)
  integer  (kind=int_kind), intent(in),optional :: start(3)
  real (kind=real_kind),dimension(nx,ny,nt),intent(out) :: values
  real (kind=real_kind)     :: scalefactor
+ real (kind=real_kind)     :: addoffset
  integer  (kind=int_kind)  :: varId, sfpresent
 
  CALL ncheck(nf90_inq_varid(ncId, varName, varId),ncfname)
@@ -262,6 +268,10 @@ SUBROUTINE nc_read3d(ncfname, ncId, varname, values,nx,ny,nt,start)
  IF (sfpresent.eq.1) THEN
   values = values * scalefactor
  ENDIF
+ CALL nc_addoffset(ncfname, ncId, varId, sfpresent, addoffset)
+ IF (sfpresent.eq.1) THEN
+  values = values + addoffset
+ ENDIF
 END SUBROUTINE nc_read3d
 
 !**************************************************************
@@ -274,6 +284,7 @@ SUBROUTINE nc_read2d(ncfname, ncId, varname, values,nx,ny,start)
  real  (kind=real_kind),dimension(nx,ny),intent(out) :: values
 
  real (kind=real_kind)     :: scalefactor
+ real (kind=real_kind)     :: addoffset
  integer  (kind=int_kind)  :: varId, sfpresent
 
  CALL ncheck(nf90_inq_varid(ncId, varName, varId),ncfname)
@@ -288,6 +299,10 @@ SUBROUTINE nc_read2d(ncfname, ncId, varname, values,nx,ny,start)
  IF (sfpresent.eq.1) THEN
   values = values * scalefactor
  ENDIF
+ CALL nc_addoffset(ncfname, ncId, varId, sfpresent, addoffset)
+ IF (sfpresent.eq.1) THEN
+  values = values + addoffset
+ ENDIF
 END SUBROUTINE nc_read2d
 
 
@@ -301,6 +316,7 @@ SUBROUTINE nc_read1d(ncfname, ncId, varname, values, nx, start)
  real  (kind=real_kind), dimension(nx), intent(out):: values
 
  real (kind=real_kind)     :: scalefactor
+ real (kind=real_kind)     :: addoffset
  integer  (kind=int_kind)  :: varId, sfpresent
 
  CALL ncheck(nf90_inq_varid(ncId, varName, varId),ncfname)
@@ -314,6 +330,10 @@ SUBROUTINE nc_read1d(ncfname, ncId, varname, values, nx, start)
  CALL nc_scalefactor(ncfname, ncId, varId, sfpresent, scalefactor)
  IF (sfpresent.eq.1) THEN
   values = values * scalefactor
+ ENDIF
+ CALL nc_addoffset(ncfname, ncId, varId, sfpresent, addoffset)
+ IF (sfpresent.eq.1) THEN
+  values = values + addoffset
  ENDIF
 END SUBROUTINE nc_read1d
 
@@ -378,7 +398,26 @@ SUBROUTINE nc_scalefactor(ncfname, ncId, varId, sfpresent, scalefactor)
  ENDIF
 
 END SUBROUTINE nc_scalefactor
+!**************************************************************
 
+!fix a possible add_offset as an attribute
+SUBROUTINE nc_addoffset(ncfname, ncId, varId, sfpresent, addoffset)
+  character (len=*), intent(in)         :: ncfname
+  integer  (kind=int_kind), intent(in)  :: ncId, varId
+  integer  (kind=int_kind), intent(out) :: sfpresent
+  real  (kind=real_kind),   intent(out) :: addoffset
+  integer  (kind=int_kind)              :: ScaleLength, status
+ 
+  status = nf90_inquire_attribute(ncid, varId, 'add_offset', len = ScaleLength)
+  IF (status .eq. nf90_noerr) THEN 
+   sfpresent = 1
+   CALL ncheck(nf90_get_att(ncId, varId, 'add_offset',addoffset), ncfname)
+  ELSE
+   sfpresent = 0
+  ENDIF
+ 
+ END SUBROUTINE nc_addoffset
+ 
 !**************************************************************
 
 !get length of dimension with axis name

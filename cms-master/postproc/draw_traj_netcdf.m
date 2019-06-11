@@ -1,6 +1,6 @@
 %% parameters
-nest_filename='nest_1_20160101000000.nc';
-traj_filename='traj_file_1.nc';
+nest_filename='../expt/expt_japan/nests/nest_1_20020601000000.nc';
+traj_filename='../expt/expt_japan/output/traj_file_02.nc';
 
 %% read in the nest data
 
@@ -25,9 +25,10 @@ layer=1;
 %divide velocities in land(value=1) and water(value=0)
 %velocity of land is 2^100
 mask=squeeze(uvel(:,:,layer,1));
-mask(mask<2^100)=0;
-mask(mask==2^100)= 1;
+mask(mask>-30)=0;
+mask(mask<=-30)= 1;
 %draw the land and water
+figure;
 contourf(lonAxis,latAxis,mask',[0.5 0.5],'linestyle','none');
 %color of the land in rgb color model
 colormap([0.75 0.75 0.75])
@@ -71,8 +72,9 @@ colors=jet(num_traj);
 
 hold on;
 for i=1:num_traj
-    plot(lon(:,i), lat(:,i),'color','green');
-end
+%     plot(lon(:,i), lat(:,i),'color','green');
+    plot(lon(:,i), lat(:,i),'color',colors(i,:));
+ end
 hold off;
 
 %print title

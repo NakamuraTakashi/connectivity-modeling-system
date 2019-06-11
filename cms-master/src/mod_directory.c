@@ -51,7 +51,7 @@ void rename_file_ (char * dir1, char * dir2, int * len_dir1, int * len_dir2)
 {
    int status, errno;
    char dirOld[*len_dir1];
-   char dirNew[*len_dir2];
+   char dirNew[*len_dir1];
 
    substr(dirOld, dir1, 0, *len_dir1);
    substr(dirNew, dir2, 0, *len_dir2); 

@@ -1,0 +1,14 @@
+*.exe
+*.o
+*.mod
+
+*.nc
+*.dump
+*.stackdump
+*.mat
+*.asv
+!*MyColormaps.mat
+
+*.shp
+*.kml
+*con_file_*
