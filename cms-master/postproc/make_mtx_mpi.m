@@ -1,10 +1,13 @@
+close all
 %% parameters
 np = 10; % Number of CPU
-output_dir = '../expt/expt_japan/output';
+YEAR = '1993'
+% output_dir = '../expt/expt_cots_2011/output';
+output_dir = ['../expt/expt_cots_' YEAR '/output'];
+% n = number of polygons
+n=30;
 
 %% 
-% n = number of polygons
-n=12;
 
 for j = 1:np
     if np >= 100      
@@ -49,7 +52,8 @@ for i = 1:n
 end
 
 % settle(settle ==0)=nan;
-save('connectivity_matrix.mat','settle');
+% save('connectivity_matrix.mat','settle');
+save(['connectivity_matrix_' YEAR '.mat'],'settle');
 
 %% plot the matrix
 
@@ -58,16 +62,25 @@ save('connectivity_matrix.mat','settle');
 % [xi,yi]=meshgrid(1:1:n, 1:1:n);
 load('MyColormaps')
 
-figure;
-im=imagesc(flipud(settle));
-colormap(colmap4);
+f1=figure;
+f1.Color=[1 1 1]; f1.Position=[0 0 580 500];
+clims = [0 129];
+im=imagesc(flipud(settle),clims);
+colormap(colmap1);
 hold on
 % set(gca,'YDir','normal');
 
 ylabel('Source Node');
 xlabel('Sink Node');
+xticks(1:n)
+xticklabels(1:n)
+yticks(1:n)
+yticklabels(n:-1:1)
 colorbar
 hold off
+
+drawnow
+% hgexport(figure(1), ['output/cm_' YEAR '.png'], hgexport('factorystyle'),'Format','png');
 
 %% Markov chain
 Q = settle.'; %未完成!!! 行と列を入れ替え、各列が合計1になるようにノーマライズする。

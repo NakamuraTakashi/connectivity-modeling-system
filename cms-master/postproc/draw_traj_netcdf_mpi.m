@@ -1,10 +1,10 @@
 %% parameters
-nest_filename='../expt/expt_japan/nests/nest_1_20020601000000.nc';
+nest_filename='../expt/expt_cots_2018/nests/nest_1_20180401000000.nc';
 np = 10; % Number of CPU
-output_dir = '../expt/expt_japan/output';
+output_dir = '../expt/expt_cots_2018/output';
 polyfile = 'D:/Documents/GIS_data/Yasuda_COTS/habitat.shp';
 
-n_polygon = 12;
+n_polygon = 29;
 
 %% read in the nest data
 

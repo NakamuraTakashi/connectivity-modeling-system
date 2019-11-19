@@ -12,3 +12,14 @@
 *.shp
 *.kml
 *con_file_*
+
+*.txt
+*.xlsx
+*.nml
+*.png
+*.gif
+*polygonFile
+*releaseFile
+*buoyancy_example
+*.list
+*.xml
