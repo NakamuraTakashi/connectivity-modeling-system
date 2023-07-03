@@ -128,7 +128,8 @@ cnt=zeros(1,npt);
 skip=24;
 %% Plot particles
 for i=1:skip:nstep
-
+% for i=1:1:1
+    
     t = start_day+dt*i;
     
     for j = 1:ncpu

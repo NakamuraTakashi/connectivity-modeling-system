@@ -61,7 +61,7 @@ drawnow
 Q = settle;
 Q = Q./sum(Q);
 Q = Q.';
-Q2=Q^1000;  %!!!!!!!!!!!!!!!!! Q^n n: n-th generation
+Q2=Q^500;  %!!!!!!!!!!!!!!!!! Q^n n: n-th generation
 % for i=1:2
 %     Q2 = Q2.'*Q;
 % end
